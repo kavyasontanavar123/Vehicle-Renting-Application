@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.Vehicle.Renting.Application.entity.Image;
 import com.example.Vehicle.Renting.Application.entity.User;
 import com.example.Vehicle.Renting.Application.exception.FailedToUploadException;
+import com.example.Vehicle.Renting.Application.exception.ImageNotFoundByIdException;
 import com.example.Vehicle.Renting.Application.exception.UserNotFoundByIdException;
 import com.example.Vehicle.Renting.Application.repository.ImageRepository;
 import com.example.Vehicle.Renting.Application.repository.UserRepository;
@@ -27,6 +28,7 @@ public class ImageService {
 
 	public void uploadProfile(int userId, MultipartFile file)  {
 		Optional<User> optional = userRepository.findById(userId);
+		
 		if(optional.isPresent()) {
 			Image image = imageRepository.save(this.getImage(file));
 			
@@ -38,6 +40,7 @@ public class ImageService {
 		}
 		
 	}
+	
 	private Image getImage(MultipartFile file) {
 		Image image = new Image();
 		try {
@@ -53,5 +56,16 @@ public class ImageService {
 		return image;
 		
 	}
-	
+
+	public Image findImageById(int imageId) {
+		Optional<Image> optional =imageRepository.findById(imageId);
+		if(optional.isPresent()) {
+		Image image = optional.get();
+		
+		return image;
+		
+	}else {
+		throw new ImageNotFoundByIdException("Image not found");
+	}
+	}
 }
