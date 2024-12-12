@@ -29,16 +29,6 @@ public class UserController {
 				.body(ResponseStructure.create(HttpStatus.CREATED.value(),"customer created",user));
 		
 	}
-	@PostMapping("/upload-profile")
-	public ResponseEntity<SimpleResponseStructure>uploadProfile(@RequestParam ("userId")int userId,
-			@RequestParam("file")MultipartFile file ){
-		
-	        userService.uploadProfile(userId,file);
-		return ResponseEntity
-				.status(HttpStatus.CREATED)
-				.body(SimpleResponseStructure.create(HttpStatus.CREATED.value(),"customer image uploaded"));
-		
-	  
-	}
+	
 
 }
