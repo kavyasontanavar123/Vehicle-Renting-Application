@@ -1,5 +1,6 @@
 package com.example.Vehicle.Renting.Application.responsedto;
 
+import com.example.Vehicle.Renting.Application.entity.Image;
 import com.example.Vehicle.Renting.Application.enums.UserRole;
 
 public class UserResponse {
@@ -8,6 +9,16 @@ public class UserResponse {
 	private String email;
 	private String phoneNumber;
 	private UserRole role;
+	private String profilePictureLink;
+	
+	
+	
+	public String getProfilePictureLink() {
+		return profilePictureLink;
+	}
+	public void setProfilePictureLink(String profilePictureLink) {
+		this.profilePictureLink = profilePictureLink;
+	}
 	public int getUserId() {
 		return userId;
 	}

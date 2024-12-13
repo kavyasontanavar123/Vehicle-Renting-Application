@@ -2,6 +2,7 @@ package com.example.Vehicle.Renting.Application.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +31,13 @@ public class UserController {
 				.status(HttpStatus.CREATED)
 				.body(ResponseStructure.create(HttpStatus.CREATED.value(),"customer created",userResponse));
 		
+	}
+	@GetMapping("/find-user")
+	public ResponseEntity<ResponseStructure<UserResponse>>findUser(@RequestParam  int userId){
+		 UserResponse userResponse = userService.findUserById(userId);
+		 return ResponseEntity
+					.status(HttpStatus.FOUND)
+					.body(ResponseStructure.create(HttpStatus.CREATED.value(),"User found successfully",userResponse));
 	}
 	
 
