@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.example.Vehicle.Renting.Application.entity.User;
+import com.example.Vehicle.Renting.Application.enums.UserRole;
 import com.example.Vehicle.Renting.Application.exception.UserNotFoundByIdException;
 import com.example.Vehicle.Renting.Application.mapper.UserMapper;
 import com.example.Vehicle.Renting.Application.repository.ImageRepository;
@@ -24,8 +25,9 @@ public class UserService {
 
 	}
 
-	public UserResponse registration(UserRequest userRequest) {
-		User user = userMapper.mapToUser(userRequest);
+	public UserResponse register(UserRequest userRequest,UserRole role) {
+		User user = userMapper.mapToUser(userRequest,new  User());
+		user.setRole(role);
 		User req = userRepository.save(user);
 		return userMapper.mapToUserResponse(req);
 	}
@@ -51,4 +53,26 @@ public class UserService {
 		}
 	}
 
-}
+	
+	public UserResponse updateUser(int userId, UserRequest userRequest) {
+		 Optional<User> optionalUser = userRepository.findById(userId);
+		 if (optionalUser.isPresent()) {
+	            User user = userMapper.mapToUser(userRequest, optionalUser.get());
+	            userRepository.save(user);
+	            
+	            return userMapper.mapToUserResponse(user);
+	        }
+		 else {
+			 throw  new UserNotFoundByIdException("Failed to find User");
+		 }
+
+		
+	}
+
+	
+
+
+	}
+
+
+
