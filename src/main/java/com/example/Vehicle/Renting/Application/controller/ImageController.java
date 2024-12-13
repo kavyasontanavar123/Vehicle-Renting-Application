@@ -39,7 +39,7 @@ public class ImageController {
 	}
 	@GetMapping("/find-image")
 	public ResponseEntity<byte[]>findImageById(@RequestParam ("imageId")int imageId){
-		//Optional<byte[]> imageData = imageService.getImage(imageId);
+
 		Image image =  imageService.findImageById(imageId);
 		return ResponseEntity
 				.status(HttpStatus.FOUND)

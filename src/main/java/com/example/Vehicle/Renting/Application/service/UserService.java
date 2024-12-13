@@ -1,30 +1,29 @@
 package com.example.Vehicle.Renting.Application.service;
 
-import java.io.IOException;
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.example.Vehicle.Renting.Application.entity.Image;
 import com.example.Vehicle.Renting.Application.entity.User;
-import com.example.Vehicle.Renting.Application.exception.FailedToUploadException;
-import com.example.Vehicle.Renting.Application.exception.UserNotFoundByIdException;
-import com.example.Vehicle.Renting.Application.repository.ImageRepository;
+import com.example.Vehicle.Renting.Application.mapper.UserMapper;
 import com.example.Vehicle.Renting.Application.repository.UserRepository;
+import com.example.Vehicle.Renting.Application.requestdto.UserRequest;
+import com.example.Vehicle.Renting.Application.responsedto.UserResponse;
 
 @Service
 public class UserService {
 	private  final UserRepository userRepository;
+	private final UserMapper userMapper;
 	
 
-	public UserService(UserRepository userRepository) {
+	public UserService(UserRepository userRepository,UserMapper userMapper) {
 		super();
 		this.userRepository = userRepository;
+		this.userMapper = userMapper;
 		
 	}
-	public User registration(User user) {
-		return userRepository.save(user);
+	public UserResponse registration(UserRequest userRequest) {
+		User user = userMapper.mapToUser(userRequest);
+		User req = userRepository.save(user);
+		return userMapper.mapToUserResponse(req);
 	}
 	
 

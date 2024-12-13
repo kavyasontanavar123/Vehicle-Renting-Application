@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.Vehicle.Renting.Application.entity.User;
+import com.example.Vehicle.Renting.Application.requestdto.UserRequest;
+import com.example.Vehicle.Renting.Application.responsedto.UserResponse;
 import com.example.Vehicle.Renting.Application.service.UserService;
 import com.example.Vehicle.Renting.Application.util.ResponseStructure;
 import com.example.Vehicle.Renting.Application.util.SimpleResponseStructure;
@@ -22,11 +24,11 @@ public class UserController {
 		this.userService = userService;
 	}
 	@PostMapping("/register")
-	public ResponseEntity<ResponseStructure<User>>registration(@RequestBody User user){
-		user= userService.registration(user);
+	public ResponseEntity<ResponseStructure<UserResponse>>registration(@RequestBody UserRequest userRequest){
+		UserResponse userResponse= userService.registration(userRequest);
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
-				.body(ResponseStructure.create(HttpStatus.CREATED.value(),"customer created",user));
+				.body(ResponseStructure.create(HttpStatus.CREATED.value(),"customer created",userResponse));
 		
 	}
 	
