@@ -48,7 +48,7 @@ public class UserController {
 	}
 	@PutMapping("/update-user")
 	public ResponseEntity<ResponseStructure<UserResponse>>updateUser(@RequestParam  int userId,@RequestBody UserRequest userRequest){
-		 UserResponse userResponse = userService.updateUser(userId,userRequest);
+		 UserResponse userResponse = userService.updateUser(userRequest,userId);
 		 return ResponseEntity
 					.status(HttpStatus.FOUND)
 					.body(ResponseStructure.create(HttpStatus.CREATED.value(),"User found successfully",userResponse));

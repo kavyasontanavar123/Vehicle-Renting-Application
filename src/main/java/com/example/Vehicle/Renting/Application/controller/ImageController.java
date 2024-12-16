@@ -30,7 +30,7 @@ public class ImageController {
 	public ResponseEntity<SimpleResponseStructure>uploadProfile(@RequestParam ("userId")int userId,
 			@RequestParam("file")MultipartFile file ){
 		
-	        imageService.uploadProfile(userId,file);
+	        imageService.uploadUserProfilePicture(userId,file);
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
 				.body(SimpleResponseStructure.create(HttpStatus.CREATED.value(),"customer image uploaded"));

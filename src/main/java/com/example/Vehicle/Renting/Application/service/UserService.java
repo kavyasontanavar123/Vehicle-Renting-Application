@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.Vehicle.Renting.Application.entity.Image;
 import com.example.Vehicle.Renting.Application.entity.User;
 import com.example.Vehicle.Renting.Application.enums.UserRole;
 import com.example.Vehicle.Renting.Application.exception.UserNotFoundByIdException;
@@ -38,35 +39,37 @@ public class UserService {
 		if (optionalUser.isPresent()) {
 	        User user = optionalUser.get();
 	        UserResponse userResponse = userMapper.mapToUserResponse(user);
-	        this.setProfilePictureURL(userResponse,user.getUserId());
+	        this.setProfilePictureURL(userResponse,user.getProfilePicture());
 	        return userResponse;
 		}else {
 			 throw new UserNotFoundByIdException("User not found");
 			 
 		}
 	}
-	private void setProfilePictureURL( UserResponse userResponse,int userId) {
-		int imageId=userRepository.getProfilePictureIdByUserId(userId);
-		
-		if(imageId>0) {
-			userResponse.setProfilePictureLink("/find-image?imageId=" + imageId);
-		}
+	private void setProfilePictureURL(UserResponse response, Image profilePicture) {
+
+		if (profilePicture != null)
+			response.setProfilePictureLink("/find-image-by-id?image-id=" + profilePicture.getImageId());
+
 	}
 
-	
-	public UserResponse updateUser(int userId, UserRequest userRequest) {
-		 Optional<User> optionalUser = userRepository.findById(userId);
-		 if (optionalUser.isPresent()) {
-	            User user = userMapper.mapToUser(userRequest, optionalUser.get());
-	            userRepository.save(user);
-	            
-	            return userMapper.mapToUserResponse(user);
-	        }
-		 else {
-			 throw  new UserNotFoundByIdException("Failed to find User");
-		 }
-
+	public UserResponse updateUser(UserRequest request,int userId) {
 		
+		Optional<User> optional = userRepository.findById(userId);
+
+		if (optional.isPresent()) {
+			User user = userMapper.mapToUser(request, optional.get());
+			
+			userRepository.save(user);
+			
+			UserResponse response = userMapper.mapToUserResponse(user);
+			this.setProfilePictureURL(response, user.getProfilePicture()); 
+			
+			return response;
+			
+		} else {
+			throw new UserNotFoundByIdException("Failed To Find The User");
+		}
 	}
 
 	
