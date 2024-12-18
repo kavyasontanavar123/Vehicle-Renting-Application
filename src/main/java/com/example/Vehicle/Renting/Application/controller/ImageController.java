@@ -1,18 +1,23 @@
 package com.example.Vehicle.Renting.Application.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.Vehicle.Renting.Application.entity.Image;
+import com.example.Vehicle.Renting.Application.entity.Vehicle;
 import com.example.Vehicle.Renting.Application.service.ImageService;
+import com.example.Vehicle.Renting.Application.util.ResponseStructure;
 import com.example.Vehicle.Renting.Application.util.SimpleResponseStructure;
 
 @RestController
@@ -48,5 +53,17 @@ public class ImageController {
 	
 				
 	}
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@PostMapping("/upload-vehicle-img")
+	public ResponseEntity<SimpleResponseStructure> uploadVehicleImage(@RequestParam("file")List<MultipartFile> file,@RequestParam("vehicleId") int vehiclId) {
+
+		imageService.uploadVehicleImage(file,vehiclId);
+
+		return ResponseEntity
+				.status(HttpStatus.CREATED)
+				.body(SimpleResponseStructure.create(HttpStatus.CREATED.value(),"vehicle image uploaded"));
+		
+	}
+	
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.Vehicle.Renting.Application.entity.Vehicle;
 import com.example.Vehicle.Renting.Application.exception.VehicleNotFoundByIdExcepction;
@@ -46,4 +47,9 @@ public class VehicleService {
 		}
 
 	}
+
+	
+		   
+
+	
 }
