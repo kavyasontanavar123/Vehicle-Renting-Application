@@ -14,18 +14,21 @@ import com.example.Vehicle.Renting.Application.repository.ImageRepository;
 import com.example.Vehicle.Renting.Application.repository.UserRepository;
 import com.example.Vehicle.Renting.Application.requestdto.UserRequest;
 import com.example.Vehicle.Renting.Application.responsedto.UserResponse;
+import com.example.Vehicle.Renting.Application.security.OauthUtil;
 
 @Service
 public class UserService {
 	private final UserRepository userRepository;
 	private final UserMapper userMapper;
 	private final PasswordEncoder passwordEncoder ;
+	private final OauthUtil oauthUtil;
 
-	public UserService(UserRepository userRepository,ImageRepository imageRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
+	public UserService(UserRepository userRepository,ImageRepository imageRepository, UserMapper userMapper, PasswordEncoder passwordEncoder,OauthUtil oauthUtil) {
 		super();
 		this.userRepository = userRepository;
 		this.userMapper = userMapper;
 		this.passwordEncoder =passwordEncoder;
+		this.oauthUtil =oauthUtil ;
 
 	}
 
@@ -37,18 +40,13 @@ public class UserService {
 		return userMapper.mapToUserResponse(req);
 	}
 
-	public UserResponse findUserById(int userId) {
-		Optional<User> optionalUser = userRepository.findById(userId);
-	
-		if (optionalUser.isPresent()) {
-	        User user = optionalUser.get();
-	        UserResponse userResponse = userMapper.mapToUserResponse(user);
-	        this.setProfilePictureURL(userResponse,user.getProfilePicture());
-	        return userResponse;
-		}else {
-			 throw new UserNotFoundByIdException("User not found");
-			 
-		}
+	public UserResponse findUser() {
+
+		User user = oauthUtil.getCurrentUser();
+		UserResponse response = userMapper.mapToUserResponse(user);
+		this.setProfilePictureURL(response, user.getProfilePicture());
+
+		return response;
 	}
 	private void setProfilePictureURL(UserResponse response, Image profilePicture) {
 
@@ -57,29 +55,23 @@ public class UserService {
 
 	}
 
-	public UserResponse updateUser(UserRequest request,int userId) {
-		
-		Optional<User> optional = userRepository.findById(userId);
+	public UserResponse updateUser(UserRequest request) {
+		User user = userMapper.mapToUser(request, oauthUtil.getCurrentUser());
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-		if (optional.isPresent()) {
-			User user = userMapper.mapToUser(request, optional.get());
-			
-			userRepository.save(user);
-			
-			UserResponse response = userMapper.mapToUserResponse(user);
-			this.setProfilePictureURL(response, user.getProfilePicture()); 
-			
-			return response;
-			
-		} else {
-			throw new UserNotFoundByIdException("Failed To Find The User");
-		}
+		userRepository.save(user);
+
+		UserResponse response = userMapper.mapToUserResponse(user);
+		this.setProfilePictureURL(response, user.getProfilePicture());
+
+		return response;
+	}
 	}
 
 	
 
 
-	}
+	
 
 
 

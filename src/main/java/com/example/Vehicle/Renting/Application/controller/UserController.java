@@ -24,11 +24,11 @@ public class UserController {
 		this.userService = userService;
 	}
 	@PostMapping("/customer/register")
-	public ResponseEntity<ResponseStructure<UserResponse>>registerCustomer(@RequestBody UserRequest userRequest){
+	public ResponseEntity<ResponseStructure<UserResponse>> registerCustomer(@RequestBody UserRequest userRequest){
 		UserResponse userResponse= userService.register(userRequest,UserRole.CUSTOMER);
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
-				.body(ResponseStructure.create(HttpStatus.CREATED.value(),"customer created",userResponse));
+				.body(ResponseStructure.create(HttpStatus.CREATED.value(), "customer created", userResponse));
 		
 	}
 	@PostMapping("/renting-partner/register")
@@ -40,18 +40,18 @@ public class UserController {
 		
 	}
 	@GetMapping("/find-user")
-	public ResponseEntity<ResponseStructure<UserResponse>>findUser(@RequestParam  int userId){
-		 UserResponse userResponse = userService.findUserById(userId);
+	public ResponseEntity<ResponseStructure<UserResponse>>findUser(){
+		 UserResponse userResponse = userService.findUser();
 		 return ResponseEntity
 					.status(HttpStatus.FOUND)
 					.body(ResponseStructure.create(HttpStatus.CREATED.value(),"User found successfully",userResponse));
 	}
 	@PutMapping("/update-user")
-	public ResponseEntity<ResponseStructure<UserResponse>>updateUser(@RequestParam  int userId,@RequestBody UserRequest userRequest){
-		 UserResponse userResponse = userService.updateUser(userRequest,userId);
+	public ResponseEntity<ResponseStructure<UserResponse>>updateUser(@RequestBody UserRequest userRequest){
+		 UserResponse userResponse = userService.updateUser(userRequest);
 		 return ResponseEntity
-					.status(HttpStatus.FOUND)
-					.body(ResponseStructure.create(HttpStatus.CREATED.value(),"User found successfully",userResponse));
+					.status(HttpStatus.OK)
+					.body(ResponseStructure.create(HttpStatus.OK.value(),"User updated successfully",userResponse));
 	}
 	
 	

@@ -23,7 +23,7 @@ public class ResponseStructure<T> {
 		this.data = data;
 	}
 	
-	public static <T>ResponseStructure create(int status,String message,T data){
+	public static <T> ResponseStructure<T> create(int status,String message,T data){
 		ResponseStructure<T> response = new ResponseStructure<>();
 		response.setStatus(status);
 		response.setMessage(message);
