@@ -1,5 +1,7 @@
 package com.example.Vehicle.Renting.Application.entity;
 
+import java.util.List;
+
 import com.example.Vehicle.Renting.Application.enums.FuelType;
 import com.example.Vehicle.Renting.Application.enums.VehicleType;
 
@@ -7,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Vehicle {
@@ -17,6 +20,16 @@ public class Vehicle {
 	private VehicleType type;
 	private String model;
 	private FuelType fuelType;
+	@OneToMany
+	private List<Image> vehicleImage;
+	
+	
+	public List<Image> getVehicleImage() {
+		return vehicleImage;
+	}
+	public void setVehicleImage(List<Image> vehicleImage) {
+		this.vehicleImage = vehicleImage;
+	}
 	public int getVehicleId() {
 		return vehicleId;
 	}

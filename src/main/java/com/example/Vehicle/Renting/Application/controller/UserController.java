@@ -2,6 +2,7 @@ package com.example.Vehicle.Renting.Application.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,6 +24,7 @@ public class UserController {
 		super();
 		this.userService = userService;
 	}
+	//@PreAuthorize("hasAuthority('CUSTOMER')")
 	@PostMapping("/customer/register")
 	public ResponseEntity<ResponseStructure<UserResponse>> registerCustomer(@RequestBody UserRequest userRequest){
 		UserResponse userResponse= userService.register(userRequest,UserRole.CUSTOMER);
@@ -31,12 +33,23 @@ public class UserController {
 				.body(ResponseStructure.create(HttpStatus.CREATED.value(), "customer created", userResponse));
 		
 	}
+	
+	//@PreAuthorize("hasAuthority('RENTING_PARTNER')")
 	@PostMapping("/renting-partner/register")
 	public ResponseEntity<ResponseStructure<UserResponse>>registerRentingPartner(@RequestBody UserRequest userRequest){
 		UserResponse userResponse= userService.register(userRequest,UserRole.RENTING_PARTNER);
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
-				.body(ResponseStructure.create(HttpStatus.CREATED.value(),"customer created",userResponse));
+				.body(ResponseStructure.create(HttpStatus.CREATED.value(),"Renting partner created",userResponse));
+		
+	}
+	//@PreAuthorize("hasAuthority('ADMIN')")
+	@PostMapping("/admin/register")
+	public ResponseEntity<ResponseStructure<UserResponse>> registerAdmin(@RequestBody UserRequest userRequest){
+		UserResponse userResponse= userService.register(userRequest,UserRole.ADMIN);
+		return ResponseEntity
+				.status(HttpStatus.CREATED)
+				.body(ResponseStructure.create(HttpStatus.CREATED.value(), "Admin created", userResponse));
 		
 	}
 	@GetMapping("/find-user")
@@ -53,6 +66,7 @@ public class UserController {
 					.status(HttpStatus.OK)
 					.body(ResponseStructure.create(HttpStatus.OK.value(),"User updated successfully",userResponse));
 	}
+	
 	
 	
 
