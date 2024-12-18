@@ -27,10 +27,10 @@ public class ImageController {
 
 
 	@PostMapping("/upload-profile")
-	public ResponseEntity<SimpleResponseStructure>uploadProfile(@RequestParam ("userId")int userId,
+	public ResponseEntity<SimpleResponseStructure>uploadProfile(
 			@RequestParam("file")MultipartFile file ){
 		
-	        imageService.uploadUserProfilePicture(userId,file);
+	        imageService.uploadUserProfilePicture(file);
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
 				.body(SimpleResponseStructure.create(HttpStatus.CREATED.value(),"customer image uploaded"));

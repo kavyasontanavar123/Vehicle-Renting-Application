@@ -13,46 +13,30 @@ import com.example.Vehicle.Renting.Application.exception.ImageNotFoundByIdExcept
 import com.example.Vehicle.Renting.Application.exception.UserNotFoundByIdException;
 import com.example.Vehicle.Renting.Application.repository.ImageRepository;
 import com.example.Vehicle.Renting.Application.repository.UserRepository;
+import com.example.Vehicle.Renting.Application.security.OauthUtil;
 
 @Service
 public class ImageService {
 	private final ImageRepository imageRepository;
 	private final UserRepository userRepository;
+	private final OauthUtil oauthUtil;
 
-	public ImageService(ImageRepository imageRepository, UserRepository userRepository) {
+	public ImageService(ImageRepository imageRepository, UserRepository userRepository,OauthUtil oauthUtil) {
 		super();
 		this.imageRepository = imageRepository;
 		this.userRepository = userRepository;
+		this.oauthUtil=oauthUtil;
 		
 	}
 
-	public void uploadUserProfilePicture(int userId, MultipartFile file) {
+	public void uploadUserProfilePicture( MultipartFile file) {
 
-		Optional<User> optional = userRepository.findById(userId);
-		if (optional.isPresent()) {
-
-			User user = optional.get();
-
-			if (user.getProfilePicture() != null) {
-				Image image = user.getProfilePicture();
-				this.uploadUserProfile(file, user);
-				imageRepository.delete(image);
-			}
-
-			this.uploadUserProfile(file, user);
-
-		} else {
-			throw new UserNotFoundByIdException("User not Found");
-		}
-
-	}
-
-	private void uploadUserProfile(MultipartFile file, User user) {
-
-		Image image = imageRepository.save(this.getImage(file));
+		User user= oauthUtil.getCurrentUser();
+		Image image1 = user.getProfilePicture();
+		Image image=imageRepository.save(this.getImage(file));
 		user.setProfilePicture(image);
-
 		userRepository.save(user);
+		imageRepository.delete(image1);
 	}
 	
 	private Image getImage(MultipartFile file) {
