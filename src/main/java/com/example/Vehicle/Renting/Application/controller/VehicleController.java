@@ -49,6 +49,6 @@ public class VehicleController {
 		List<Vehicle> vehicles = vehicleService.findAllVehicle();
 
 		return ResponseEntity.status(HttpStatus.FOUND)
-				.body(ResponseStructure.create(HttpStatus.FOUND.value(), "Employees are found",vehicles));
+				.body(ResponseStructure.create(HttpStatus.FOUND.value(), "Vehicles are found",vehicles));
 	}
 }

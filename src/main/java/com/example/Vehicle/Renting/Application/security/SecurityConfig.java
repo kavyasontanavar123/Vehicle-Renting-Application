@@ -19,16 +19,11 @@ public class SecurityConfig {
 		
 	}
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http
-		.csrf(csrf->csrf.disable())// cross site request forgery
-		.authorizeHttpRequests(authorize -> authorize 
-				.requestMatchers("/customer/register","/find-all-vehicle","/save-vehicle")
-				.permitAll()
-				.anyRequest()
-				.authenticated())
-		.formLogin(Customizer.withDefaults())
-		.build();
+	SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
+		return http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(authorize -> authorize //Cross site request forgery
+				.requestMatchers("/customer/register", "/find-all-vehicle")
+				.permitAll().anyRequest().authenticated())
+				.formLogin(Customizer.withDefaults()).build();
 		
 	}
 
