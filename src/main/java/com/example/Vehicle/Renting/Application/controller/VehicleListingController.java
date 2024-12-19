@@ -1,7 +1,10 @@
 package com.example.Vehicle.Renting.Application.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,25 +19,30 @@ import com.example.Vehicle.Renting.Application.util.ResponseStructure;
 @RestController
 public class VehicleListingController {
 	private final VehicleListingService vehicleListingService;
-	
-	
-	
+
 	public VehicleListingController(VehicleListingService vehicleListingService) {
 		super();
 		this.vehicleListingService = vehicleListingService;
 	}
 
-
-
 	@PostMapping("/create")
-    public ResponseEntity<ResponseStructure<VehicleListingResponse>> createVehicleListing(
-            @RequestBody VehicleListingRequset vehicleListingRequest,@RequestParam("vehicleId") int vehicleId) {
+	public ResponseEntity<ResponseStructure<VehicleListingResponse>> createVehicleListing(
+			@RequestBody VehicleListingRequset vehicleListingRequest, @RequestParam("vehicleId") int vehicleId) {
 
-        VehicleListingResponse vehicleListingResponse = vehicleListingService.createVehicleListing(vehicleListingRequest, vehicleId);
+		VehicleListingResponse vehicleListingResponse = vehicleListingService
+				.createVehicleListing(vehicleListingRequest, vehicleId);
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(ResponseStructure.create(HttpStatus.CREATED.value(), "Vehicle Listing created", vehicleListingResponse));
-    }
+		return ResponseEntity.status(HttpStatus.CREATED).body(ResponseStructure.create(HttpStatus.CREATED.value(),
+				"Vehicle Listing created", vehicleListingResponse));
+	}
+	 @GetMapping("/find-all-vehicle-list")
+	 public ResponseEntity<ResponseStructure<List<VehicleListingResponse>>> findAllVehicleList(
+			 @RequestParam("vehicleId") int vehicleId){
+	  List<VehicleListingResponse> vehicleListingResponses = vehicleListingService.findAllVehicleList(vehicleId);
+	  return ResponseEntity
+              .status(HttpStatus.OK)
+              .body(ResponseStructure.create(HttpStatus.OK.value(), "Vehicle Listings fetched", vehicleListingResponses));
+		 
+	 }
 
 }
