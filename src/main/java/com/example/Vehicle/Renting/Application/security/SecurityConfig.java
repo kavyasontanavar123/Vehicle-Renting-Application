@@ -23,7 +23,7 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
 		return http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(authorize -> authorize //Cross site request forgery
-				.requestMatchers("/customer/register", "/find-all-vehicle", "/admin/register")
+				.requestMatchers("/customer/register", "/find-all-vehicle", "/admin/register","/renting-partner/register")
 				.permitAll()
 				//.requestMatchers("/save-vehicle").hasAuthority("ADMIN")
 				.anyRequest().authenticated())
