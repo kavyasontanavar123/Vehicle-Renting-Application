@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import com.example.Vehicle.Renting.Application.requestdto.VehicleListingRequset;
 import com.example.Vehicle.Renting.Application.responsedto.VehicleListingResponse;
 import com.example.Vehicle.Renting.Application.service.VehicleListingService;
 import com.example.Vehicle.Renting.Application.util.ResponseStructure;
+import com.example.Vehicle.Renting.Application.util.SimpleResponseStructure;
 
 @RestController
 public class VehicleListingController {
@@ -44,5 +46,14 @@ public class VehicleListingController {
               .body(ResponseStructure.create(HttpStatus.OK.value(), "Vehicle Listings fetched", vehicleListingResponses));
 		 
 	 }
+	 @PutMapping("/update-location-into-vehiclelisting")
+		public ResponseEntity<SimpleResponseStructure> updateLocationIntoVehicleListing(@RequestParam int locationId,
+				@RequestParam int vehicleListingId) {
+
+			vehicleListingService.updateLocationIntoVehicleListing(locationId,vehicleListingId);
+
+			return ResponseEntity.status(HttpStatus.CREATED)
+					.body(SimpleResponseStructure.create(HttpStatus.CREATED.value(), "Location inserted into Vehicle Listing Successfully"));
+		}
 
 }
