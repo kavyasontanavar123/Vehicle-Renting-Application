@@ -52,5 +52,11 @@ public class ApplicationExceptionHandler {
 				.body(ErrorStructure.create(HttpStatus.NOT_FOUND.value(),ex.getMessage(),"Failed to find location"));
 	
 	}
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure> handleUserNotFoundException(UserNotFoundException ex) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(ErrorStructure.create(HttpStatus.NOT_FOUND.value(),ex.getMessage(),"Failed to find user"));
+	
+	}
 
 }

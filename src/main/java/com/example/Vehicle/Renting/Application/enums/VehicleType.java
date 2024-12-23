@@ -8,7 +8,7 @@ public enum VehicleType {
 	SUV,
 	SEDAN,
 	MINIVAN,
-	SPORTS
+	
 
 
 }
