@@ -40,5 +40,23 @@ public class ApplicationExceptionHandler {
 				.body(ErrorStructure.create(HttpStatus.NOT_FOUND.value(),ex.getMessage(),"user not found by the given username"));
 	
 	}
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure> handleVehicleNotFoundException(VehicleNotFoundException ex) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(ErrorStructure.create(HttpStatus.NOT_FOUND.value(),ex.getMessage(),"Failed to find vehicle"));
+	
+	}
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure> handleLocationNotFoundException(LocationNotFoundException ex) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(ErrorStructure.create(HttpStatus.NOT_FOUND.value(),ex.getMessage(),"Failed to find location"));
+	
+	}
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure> handleUserNotFoundException(UserNotFoundException ex) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(ErrorStructure.create(HttpStatus.NOT_FOUND.value(),ex.getMessage(),"Failed to find user"));
+	
+	}
 
 }
