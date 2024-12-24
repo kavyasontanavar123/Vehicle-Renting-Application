@@ -16,6 +16,8 @@ import com.example.Vehicle.Renting.Application.responsedto.UserResponse;
 import com.example.Vehicle.Renting.Application.service.UserService;
 import com.example.Vehicle.Renting.Application.util.ResponseStructure;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class UserController {
 	private final UserService userService;
@@ -26,7 +28,7 @@ public class UserController {
 	}
 	//@PreAuthorize("hasAuthority('CUSTOMER')")
 	@PostMapping("/customer/register")
-	public ResponseEntity<ResponseStructure<UserResponse>> registerCustomer(@RequestBody UserRequest userRequest){
+	public ResponseEntity<ResponseStructure<UserResponse>> registerCustomer(@RequestBody @Valid UserRequest userRequest){
 		UserResponse userResponse= userService.register(userRequest,UserRole.CUSTOMER);
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
@@ -36,7 +38,7 @@ public class UserController {
 	
 	//@PreAuthorize("hasAuthority('RENTING_PARTNER')")
 	@PostMapping("/renting-partner/register")
-	public ResponseEntity<ResponseStructure<UserResponse>>registerRentingPartner(@RequestBody UserRequest userRequest){
+	public ResponseEntity<ResponseStructure<UserResponse>>registerRentingPartner(@RequestBody @Valid UserRequest userRequest){
 		UserResponse userResponse= userService.register(userRequest,UserRole.RENTING_PARTNER);
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
@@ -45,7 +47,7 @@ public class UserController {
 	}
 	//@PreAuthorize("hasAuthority('ADMIN')")
 	@PostMapping("/admin/register")
-	public ResponseEntity<ResponseStructure<UserResponse>> registerAdmin(@RequestBody UserRequest userRequest){
+	public ResponseEntity<ResponseStructure<UserResponse>> registerAdmin(@RequestBody @Valid UserRequest userRequest){
 		UserResponse userResponse= userService.register(userRequest,UserRole.ADMIN);
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
@@ -60,7 +62,7 @@ public class UserController {
 					.body(ResponseStructure.create(HttpStatus.CREATED.value(),"User found successfully",userResponse));
 	}
 	@PutMapping("/update-user")
-	public ResponseEntity<ResponseStructure<UserResponse>>updateUser(@RequestBody UserRequest userRequest){
+	public ResponseEntity<ResponseStructure<UserResponse>>updateUser(@RequestBody @Valid UserRequest userRequest){
 		 UserResponse userResponse = userService.updateUser(userRequest);
 		 return ResponseEntity
 					.status(HttpStatus.OK)

@@ -1,9 +1,9 @@
 package com.example.Vehicle.Renting.Application.util;
 
-public class ErrorStructure {
+public class ErrorStructure<T> {
 	private int status;
 	private String message;
-	private String rootCause;
+	private T rootCause;
 	public int getStatus() {
 		return status;
 	}
@@ -16,14 +16,14 @@ public class ErrorStructure {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public String getRootCause() {
-		return rootCause;
+	public T getRootCause() {
+		return this.rootCause;
 	}
-	public void setRootCause(String rootCause) {
+	public void setRootCause(T rootCause) {
 		this.rootCause = rootCause;
 	}
 	
-	public static ErrorStructure create(int status, String message,String rootCause) {
+	public static <T> ErrorStructure<T> create(int status, String message,T rootCause) {
 		ErrorStructure error= new ErrorStructure();
 		error.setStatus(status);
 		error.setMessage(message);
